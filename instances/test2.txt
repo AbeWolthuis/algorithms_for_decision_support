@@ -1,0 +1,10 @@
+5
+3
+3, 3, 3
+15, 15, 15
+11, 11, 11
+# people
+# days
+# amount of seats
+# seat prices
+# hotel prices
