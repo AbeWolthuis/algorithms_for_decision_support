@@ -75,5 +75,5 @@ def test1():
 
 # Check if main, then run
 if __name__ == "__main__":
-    test2()
+    test1()
 
