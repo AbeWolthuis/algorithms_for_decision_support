@@ -1,10 +1,12 @@
 import os
 
+import os
+
 def read_and_parse(filename='test1.txt'):
     # Change working directory to the directory where the script is located
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
     foldername = 'instances'
-    filepath = foldername + "\\" + filename
+    filepath = os.path.join(foldername, filename)
 
     """ Example file-layout:
         100           # People

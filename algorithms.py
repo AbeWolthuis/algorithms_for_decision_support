@@ -71,7 +71,7 @@ def test2():
 
 def test1():
     # Call the generator function enumerate_ways
-    for way in enumerate_ways(n=5, bins=[3,3,3]):
+    for way in enumerate_ways(n=5, bins=[5,5,5]):
         print(way)
         pass
 
@@ -79,5 +79,5 @@ def test1():
 
 # Check if main, then run
 if __name__ == "__main__":
-    test2()
+    test1()
 
