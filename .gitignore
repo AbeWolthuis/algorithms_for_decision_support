@@ -1,0 +1,32 @@
+# .gitignore file
+
+# Ignore Python cache directories and compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Ignore virtual environments
+venv/
+.env/
+
+# Ignore IDE-specific files (VS Code)
+.vscode/
+
+# Ignore build directories
+build/
+dist/
+
+# Ignore log files
+*.log
+
+# Ignore database files
+*.db
+
+# Ignore other generated files
+*.swp
+*.swo
+.DS_Store
+
+# Add your own rules below
