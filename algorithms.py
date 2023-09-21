@@ -40,11 +40,14 @@ def attempt2(people, days, seats, seat_prices, hotel_prices):
         # Calculate the score for this division
         sent_home_running_total = 0
         score_per_day = [0 for i in range(days)]
-        for i in range(days):
+        for day, (price, people_sent_home) in enumerate(zip(seat_prices, division)):
             # First, update the running total of people sent home (so we know how many people are left to send to the hotel the next day)
             # score = sent_home_price_that_day + hotel_price_that_day
-            sent_home_running_total += division[i]
-            score_per_day[i] = division[i] * seat_prices[i] + (people - sent_home_running_total) * hotel_prices[i]
+            sent_home_running_total += people_sent_home
+            score_per_day[day] = price * people_sent_home + (people - sent_home_running_total) * hotel_prices[day]
+
+            # sent_home_running_total += division[i]
+            # score_per_day[i] = division[i] * seat_prices[i] + (people - sent_home_running_total) * hotel_prices[i]
             
         # Store the result
         res[division] = score_per_day
@@ -53,6 +56,7 @@ def attempt2(people, days, seats, seat_prices, hotel_prices):
 
 def test2():
     res = attempt2(10, 3, seats=[5,5,5], seat_prices=[10,10,10], hotel_prices=[15,15,15])
+    res = attempt2(100, 3, seats=[50,30,40], seat_prices=[10,10,10], hotel_prices=[15,15,15])
 
     # Print all keys with the lowest score (there might be ties). The score is the sum of the values of the key (a tuple).
     min_score = min([sum(res[key]) for key in res])
@@ -61,8 +65,8 @@ def test2():
 
     print('best: ', best)
     print('\n')
-    # for k,v in res.items():
-    #     print(k, (v))
+    for k,v in res.items():
+        print(k, sum(v))
 
 
 def test1():
@@ -75,5 +79,5 @@ def test1():
 
 # Check if main, then run
 if __name__ == "__main__":
-    test1()
+    test2()
 

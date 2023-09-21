@@ -2,7 +2,6 @@ import numpy as np
 
 
 def read_data():
-
     # with open('/Users/ellalouwenaar/Downloads/Data_Strike_Offline.txt') as f:
     with open('/Users/ellalouwenaar/Downloads/alternative_data.txt') as f:
         lines_list = f.readlines()
@@ -43,5 +42,5 @@ def offline(n, m, s, p, h):
             people_left = 0
     return [flying, hotel], total_price
 
-n, m, s, p, h = read_data()
-print(offline(n, m, s, p, h))
+# n, m, s, p, h = read_data()
+# print(offline(n, m, s, p, h))

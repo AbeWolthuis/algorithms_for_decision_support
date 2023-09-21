@@ -1,0 +1,10 @@
+100
+3
+50, 30, 40
+100, 100, 50
+70, 10, 10
+# people
+# days
+# amount of seats
+# seat prices
+# hotel prices
