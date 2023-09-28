@@ -1,6 +1,7 @@
 # Imports
 from collections import deque
 import numpy as np
+import itertools
 
 def enumerate_ways(n, bins):
     q = deque()
@@ -21,15 +22,34 @@ def enumerate_ways(n, bins):
             new_combination[current_bin_index] = i
             q.append((current_sum + i, new_combination, current_bin_index + 1))
 
-def get_best_result(results):
+def get_best_result(people, results):
     decisions = np.array(list(results.keys()), dtype=object)
     scores = np.array([sum(results[tuple(key)]) for key in decisions])
     
     min_score = scores.min()
     best_keys = decisions[scores == min_score]
 
-    return [(tuple(key), min_score) for key in best_keys]
+    # Calculate how many people stay each night
+    stayers = get_stayers(people, best_keys[0])
 
+    return [((tuple(key), tuple(stayers), min_score)) for key in best_keys]
+
+
+def get_stayers(people, decision):
+    """
+    Calculates the number of people staying each night based on a decision array.
+
+    Args:
+    - people (int): total number of people
+    - decision (tuple): decision array, where the value represents the amount of people leaving
+
+    Returns:
+    - stayers (list): list of integers representing the number of people staying each night
+    """
+    stayers = [people - x for x in itertools.accumulate(decision)]
+    return stayers
+
+    
 
     
 def attempt2(people, days, seats, seat_prices, hotel_prices):
@@ -55,18 +75,16 @@ def attempt2(people, days, seats, seat_prices, hotel_prices):
     return res
 
 def test2():
-    res = attempt2(10, 3, seats=[5,5,5], seat_prices=[10,10,10], hotel_prices=[15,15,15])
-    res = attempt2(100, 3, seats=[50,30,40], seat_prices=[10,10,10], hotel_prices=[15,15,15])
-
-    # Print all keys with the lowest score (there might be ties). The score is the sum of the values of the key (a tuple).
-    min_score = min([sum(res[key]) for key in res])
-
-    best = get_best_result(res)
+    PEOPLE, DAYS, SEATS, SEAT_PRICES, HOTEL_PRICES = (100, 3, [50,30,40], [10,10,10], [15,15,15])
+    # PEOPLE, DAYS, SEATS, SEAT_PRICES, HOTEL_PRICES = (10, 3, [5,5,5], [10,10,10], [15,15,15])
+    res = attempt2(PEOPLE, DAYS, SEATS, SEAT_PRICES, HOTEL_PRICES)
+    
+    best = get_best_result(PEOPLE, res)
 
     print('best: ', best)
     print('\n')
-    for k,v in res.items():
-        print(k, sum(v))
+    # for k,v in res.items():
+    #     print(k, sum(v))
 
 
 def test1():
@@ -79,5 +97,5 @@ def test1():
 
 # Check if main, then run
 if __name__ == "__main__":
-    test1()
+    test2()
 
