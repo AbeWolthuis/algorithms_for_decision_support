@@ -34,7 +34,6 @@ def get_best_result(people, results):
 
     return [((tuple(key), tuple(stayers), min_score)) for key in best_keys]
 
-
 def get_stayers(people, decision):
     """
     Calculates the number of people staying each night based on a decision array.
@@ -50,6 +49,50 @@ def get_stayers(people, decision):
     return stayers
 
     
+
+import itertools
+
+def smart_attempt(people, days, seats, seat_prices, hotel_prices):
+    # First, create array of total price to leave on a certain day.
+    # Contains tuples: (total_price, seats_available, day) Then, sort this array based on total_price.
+    prices_array = [(sum(hotel_prices[:i]) + seat_prices[i], seats[i], i + 1) for i in range(days)]
+    prices_array = sorted(prices_array, key=lambda x: x[0])
+
+    # Store the "decisions" on each day
+    staying_array = [0 for i in range(days)]
+    leaving_array = [0 for i in range(days)]
+    cost_array = [0 for i in range(days)]
+
+    if sum(seats) < people:
+        print(f"No feasible solution since it is not possible to move {people} people within {days} days. Maximum number of seats is {sum(seats)}")
+        return (staying_array, leaving_array)
+    else:
+        # Loop until all people have been sent home. This takes at most M iterations, where M is the number of days. Since, we can move everyone in the total amount of days.
+        remaining_people = people
+        while remaining_people > 0:
+            # Pop the day with the lowest cost to move people
+            price_cheapest, availability_cheapest_option, day = prices_array.pop(0)
+
+            # We want to send as many people as possible home, since this option is now the cheapest.
+            # But, if there are more people left than the available seats on the cheapest day, we can only send the amount of people that are left, so take the minimum.
+            leavers_today = min(remaining_people, availability_cheapest_option)
+
+            # Update the arrays
+            leaving_array[day - 1] = leavers_today
+            staying_array[day - 1] = remaining_people - leavers_today
+            cost_array[day - 1] = price_cheapest*leavers_today
+
+            # Send home the leavers
+            remaining_people -= leavers_today
+
+        return (staying_array, leaving_array, sum(cost_array))
+
+
+
+
+
+
+
 
     
 def attempt2(people, days, seats, seat_prices, hotel_prices):
