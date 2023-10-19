@@ -41,6 +41,7 @@ def online(n_people, m_days, avail_seats, seat_prices, hotel_prices):
     fly[last_day] = remaining
     return (fly, hotel), total_price
 
+
 def offline(n_people, m_days, avail_seats, seat_prices, hotel_prices):
 
     # Because arrays start at 0
@@ -94,15 +95,10 @@ def offline(n_people, m_days, avail_seats, seat_prices, hotel_prices):
         # The total price of taking hotels up to that day, and then flying
         total_price += total_price_per_day[day] * send_n_home
 
-
         # Go in next iteration to second cheapest day
         i += 1
 
-
     return (fly, hotel), total_price
-
-
-    
 
 
 def upper_bound_c(instance):
@@ -115,9 +111,8 @@ def upper_bound_c(instance):
 
 
 if __name__ == '__main__':
-    instance = list(read_and_parse_instance())
+    instance = list(read_and_parse_instance(filename="test2.txt"))
     n_people, m_days, avail_seats, seat_prices, hotel_prices = instance
-
 
     optim = offline(*instance)
     algo = online(*instance)
@@ -127,6 +122,6 @@ if __name__ == '__main__':
     print(f"Result from online algorithm: {algo}")
     print(f"C-ratio: {c_ratio}")
 
-    c_upper = upper_bound_c(instance) 
+    c_upper = upper_bound_c(instance)
     print(f"Upper bound c-ratio for instance: {c_upper}")
     assert c_upper >= c_ratio

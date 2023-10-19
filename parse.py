@@ -1,5 +1,6 @@
 import os
 
+
 def read_and_parse_instance(filename='test1.txt'):
     # Change working directory to the directory where the script is located
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -16,13 +17,15 @@ def read_and_parse_instance(filename='test1.txt'):
 
     # Read and parse the file
     with open(filepath, 'r') as f:
-        PEOPLE = int(f.readline().strip()) # Note, we can't have "fractional" people, days, or amount of seats.
+        # Note, we can't have "fractional" people, days, or amount of seats.
+        PEOPLE = int(f.readline().strip())
         DAYS = int(f.readline().strip())
         SEATS = [int(seat.strip()) for seat in f.readline().split(",")]
-        
-        SEAT_PRICES = [float(price.strip()) for price in f.readline().split(",")] # Split each price, convert to list
-        HOTEL_PRICES = [float(price.strip()) for price in f.readline().split(",")] # ... same as above
+
+        # Split each price, convert to list
+        SEAT_PRICES = [float(price.strip())
+                       for price in f.readline().split(",")]
+        HOTEL_PRICES = [float(price.strip())
+                        for price in f.readline().split(",")]  # ... same as above
 
     return PEOPLE, DAYS, SEATS, SEAT_PRICES, HOTEL_PRICES
-
-    
