@@ -71,24 +71,21 @@ def smart_attempt(people, days, seats, seat_prices, hotel_prices):
         remaining_people = people
         while remaining_people > 0:
             # Pop the day with the lowest cost to move people
-            price_cheapest, availability_cheapest_option, day = prices_array.pop(0)
+            cheapest_price, cheapest_seats, cheapest_day = prices_array.pop(0)
 
             # We want to send as many people as possible home, since this option is now the cheapest.
             # But, if there are more people left than the available seats on the cheapest day, we can only send the amount of people that are left, so take the minimum.
-            leavers_today = min(remaining_people, availability_cheapest_option)
+            leavers_today = min(remaining_people, cheapest_seats)
 
             # Update the arrays
-            leaving_array[day - 1] = leavers_today
-            staying_array[day - 1] = remaining_people - leavers_today
-            cost_array[day - 1] = price_cheapest*leavers_today
+            leaving_array[cheapest_day - 1] = leavers_today
+            staying_array[cheapest_day - 1] = remaining_people - leavers_today
+            cost_array[cheapest_day - 1] = cheapest_price*leavers_today
 
             # Send home the leavers
             remaining_people -= leavers_today
 
         return (staying_array, leaving_array, sum(cost_array))
-
-
-
 
 
 
@@ -120,12 +117,12 @@ def attempt2(people, days, seats, seat_prices, hotel_prices):
 def test2():
     PEOPLE, DAYS, SEATS, SEAT_PRICES, HOTEL_PRICES = (100, 3, [50,30,40], [10,10,10], [15,15,15])
     # PEOPLE, DAYS, SEATS, SEAT_PRICES, HOTEL_PRICES = (10, 3, [5,5,5], [10,10,10], [15,15,15])
-    res = attempt2(PEOPLE, DAYS, SEATS, SEAT_PRICES, HOTEL_PRICES)
+    res = smart_attempt(PEOPLE, DAYS, SEATS, SEAT_PRICES, HOTEL_PRICES)
     
-    best = get_best_result(PEOPLE, res)
+    # best = get_best_result(PEOPLE, res)
 
-    print('best: ', best)
-    print('\n')
+    print(res)
+
     # for k,v in res.items():
     #     print(k, sum(v))
 

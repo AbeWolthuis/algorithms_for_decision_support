@@ -55,6 +55,7 @@ def offline(n, m, s, p, h):
             total_price += price_cheapest * availability_cheapest_option  # Update total price
             people_left -= availability_cheapest_option  # Update people_left
             continue
+
         # If fewer or equal people are left than the available seats on the cheapest day
         elif people_left <= availability_cheapest_option:
             flying[day - 1] += people_left  # Update flying array
