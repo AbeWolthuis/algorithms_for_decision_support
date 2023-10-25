@@ -14,9 +14,9 @@ class InstanceSpace:
     """Instance space for generation of instances."""
     n: int = 100
     m: int = 10
-    s_min: int = 1
+    s_min: int = 1 
     s_max: int = 50
-    p_min: int = 10
+    p_min: int = 10 
     p_max: int = 100
     h_min: int = 10
     h_max: int = 100
@@ -26,12 +26,12 @@ class InstanceSpace:
         people = self.n
         days = self.m
         seats = np.random.randint(
-            self.s_min, self.s_max, size=self.m)
+            self.s_min, self.s_max + 1, size=self.m)
 
         seat_prices = np.random.randint(
-            self.p_min, self.p_max, size=self.m)
+            self.p_min, self.p_max + 1, size=self.m)
         hotel_prices = np.random.randint(
-            self.h_min, self.h_max, size=self.m)
+            self.h_min, self.h_max + 1, size=self.m)
 
         seats = seats.tolist()
         seats[-1] = people  # Ensure all can fly back on last day
@@ -40,12 +40,12 @@ class InstanceSpace:
 
         return people, days, seats, seat_prices, hotel_prices
 
-    def gen_adversary(self, first_day_price):
+    def gen_adversary(self):
         """Generate an adversary for this instance space."""
         people = self.n
         days = self.m
         seats = [self.n]*self.m
-        seat_prices = [first_day_price] + [self.p_max]*(self.m - 1)
+        seat_prices = [self.p_min] + [self.p_max]*(self.m - 1)
         hotel_prices = [price - 0.000000001 for price in seat_prices]
 
         seats[-1] = people  # Ensure all can fly back on last day
@@ -122,7 +122,6 @@ def run_rand_experiments(instance_space, n_experiments):
     plt.figure(figsize=(10, 6)) 
     sns.histplot(cratios, bins=50, color='skyblue', edgecolor='black')
 
-    plt.title("Distribution of C-ratios from Online/Offline Algorithm Experiments")
     plt.xlabel("C-ratio")
     plt.ylabel("Frequency")
     plt.grid(True) 
@@ -162,9 +161,12 @@ def run_runtime_experiments(instance_space, start, stop, step=10):
 
 
 if __name__ == '__main__':
-    instance_space = InstanceSpace()
-    # print(instance_space.c_upper_bound)
+    # instance_space = InstanceSpace(p_min=50, p_max=150, h_min=1, h_max=49)
+    instance_space = InstanceSpace(m=20)
     # run_hard_coded_experiments()
 
-    # run_rand_experiments(instance_space, 100_000)
-    run_runtime_experiments(instance_space, 10, 10_000, step=10)
+    run_rand_experiments(instance_space, 100_000)
+    # adversary = instance_space.gen_adversary()
+    # run_experiment(adversary, verbose=True)
+    # print(instance_space.c_upper_bound)
+    # run_runtime_experiments(instance_space, 3, 365, step=1)
