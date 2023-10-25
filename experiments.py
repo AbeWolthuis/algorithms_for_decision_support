@@ -12,26 +12,26 @@ from parse import read_and_parse_instance
 @dataclass
 class InstanceSpace:
     """Instance space for generation of instances."""
-    n_people: int = 100
-    m_days: int = 10
-    seats_min: int = 1
-    seats_max: int = 50
-    flight_min: int = 10
-    flight_max: int = 100
-    hotel_min: int = 10
-    hotel_max: int = 100
+    n: int = 100
+    m: int = 10
+    s_min: int = 1
+    s_max: int = 50
+    p_min: int = 10
+    p_max: int = 100
+    h_min: int = 10
+    h_max: int = 100
 
     def gen(self):
         """Generate a random instance based on instance space parameters."""
-        people = self.n_people
-        days = self.m_days
+        people = self.n
+        days = self.m
         seats = np.random.randint(
-            self.seats_min, self.seats_max, size=self.m_days)
+            self.s_min, self.s_max, size=self.m)
 
         seat_prices = np.random.randint(
-            self.flight_min, self.flight_max, size=self.m_days)
+            self.p_min, self.p_max, size=self.m)
         hotel_prices = np.random.randint(
-            self.hotel_min, self.hotel_max, size=self.m_days)
+            self.h_min, self.h_max, size=self.m)
 
         seats = seats.tolist()
         seats[-1] = people  # Ensure all can fly back on last day
@@ -42,10 +42,10 @@ class InstanceSpace:
 
     def gen_adversary(self, first_day_price):
         """Generate an adversary for this instance space."""
-        people = self.n_people
-        days = self.m_days
-        seats = [self.n_people]*self.m_days
-        seat_prices = [first_day_price] + [self.flight_max]*(self.m_days - 1)
+        people = self.n
+        days = self.m
+        seats = [self.n]*self.m
+        seat_prices = [first_day_price] + [self.p_max]*(self.m - 1)
         hotel_prices = [price - 0.000000001 for price in seat_prices]
 
         seats[-1] = people  # Ensure all can fly back on last day
@@ -55,7 +55,7 @@ class InstanceSpace:
     @property
     def c_upper_bound(self):
         """The theoretical upper bound of the c-ratio"""
-        return (self.flight_max * (self.m_days - 1) + self.flight_min) / self.flight_min
+        return (self.p_max * (self.m - 1) + self.p_min) / self.p_min
 
 
 def run_experiment(instance, verbose=False):
@@ -145,7 +145,7 @@ def run_runtime_experiments(instance_space, start, stop, step=10):
     algo_times = []
 
     for m in range(start, stop, step):
-        instance_space.m_days = m
+        instance_space.m = m
         instance = instance_space.gen()
         _, _, _, (optim_elapsed, algo_elapsed) = run_experiment(instance)
         optim_times.append(optim_elapsed)
@@ -162,16 +162,9 @@ def run_runtime_experiments(instance_space, start, stop, step=10):
 
 
 if __name__ == '__main__':
-    instance_space = InstanceSpace(
-            m_days=7,
-            n_people=100,
-            flight_min=50,
-            flight_max=350,
-            hotel_min=100,
-            hotel_max=400
-    )
+    instance_space = InstanceSpace()
     # print(instance_space.c_upper_bound)
-    run_hard_coded_experiments()
+    # run_hard_coded_experiments()
 
     # run_rand_experiments(instance_space, 100_000)
-    # run_runtime_experiments(instance_space, 10, 10_000, step=100)
+    run_runtime_experiments(instance_space, 10, 10_000, step=10)
