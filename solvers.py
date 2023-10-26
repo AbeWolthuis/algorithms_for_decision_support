@@ -1,3 +1,4 @@
+"""Module containing algorithms."""
 import numpy as np
 
 

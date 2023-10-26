@@ -1,4 +1,4 @@
-"""Module containing code to run experiments"""
+"""Module containing code to run experiments on algorithms."""
 from dataclasses import dataclass
 import time
 import os
@@ -10,18 +10,21 @@ import numpy as np
 from solvers import online, offline
 
 def read_and_parse_instance(filename='test1.txt'):
-    # Change working directory to the directory where the script is located
-    os.chdir(os.path.dirname(os.path.abspath(__file__)))
-    foldername = 'instances'
-    filepath = os.path.join(foldername, filename)
+    """
+    Reads in instance input, and parses to correct object.
 
-    """ Example file-layout:
+    Example file-layout:
         100           # People
         3             # Days
         100, 500, 250 # Amount of seats
         50, 100, 150  # Seat prices
         10, 1, 100    # Hotel prices
     """
+    # Change working directory to the directory where the script is located
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    foldername = 'instances'
+    filepath = os.path.join(foldername, filename)
+
 
     # Read and parse the file
     with open(filepath, 'r') as f:
