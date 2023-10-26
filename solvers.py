@@ -5,30 +5,40 @@ def online(n_people, m_days, avail_seats, seat_prices, hotel_prices):
     # Because arrays start at 0
     last_day = m_days - 1
 
+    # Init variables
     fly = [0]*m_days
     hotel = [0]*m_days
     total_price = 0
     remaining = n_people
     day = 0
 
+    # Run for each day, except the last day
     while day < last_day:
+
+        # Get values for current day
         seats = avail_seats[day]
         seat_price = seat_prices[day]
         hotel_price = hotel_prices[day]
 
+        # If flying is cheaper than hotel
         if seat_price <= hotel_price:
+            # Fly all possible people home, adjust remaining and increment price
             amount_send_home = min(seats, remaining)
             fly[day] = amount_send_home
             remaining -= amount_send_home
             total_price += amount_send_home * seat_price
             total_price += remaining * hotel_price
 
+        # Else the hotel is cheaper
         else:
+            # Stick all people in the hotel
             hotel[day] = remaining
             total_price += remaining * hotel_price
 
+        # Do the next day
         day += 1
 
+    # Fly all people home on the last day
     seat_price = seat_prices[last_day]
     total_price += remaining * seat_price
     fly[last_day] = remaining
