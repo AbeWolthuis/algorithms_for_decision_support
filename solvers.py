@@ -33,7 +33,7 @@ def online(n_people, m_days, avail_seats, seat_prices, hotel_prices):
     total_price += remaining * seat_price
     fly[last_day] = remaining
 
-    return (fly, hotel), total_price
+    return fly, hotel, total_price
 
 
 def offline(n_people, m_days, avail_seats, seat_prices, hotel_prices):
@@ -84,4 +84,4 @@ def offline(n_people, m_days, avail_seats, seat_prices, hotel_prices):
         # Go in next iteration to second cheapest day
         i += 1
 
-    return (fly, hotel), total_price
+    return fly, hotel, total_price

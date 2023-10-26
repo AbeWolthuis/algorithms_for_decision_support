@@ -70,7 +70,7 @@ def run_experiment(instance, verbose=False):
     online_stop = time.time()
     online_elapsed = online_stop - online_start
 
-    c_ratio = algo[1]/optim[1]
+    c_ratio = algo[2]/optim[2]
 
     if verbose:
         print(f"Ran offline in {offline_elapsed}s")
@@ -161,12 +161,16 @@ def run_runtime_experiments(instance_space, start, stop, step=10):
 
 
 if __name__ == '__main__':
-    # instance_space = InstanceSpace(p_min=50, p_max=150, h_min=1, h_max=49)
-    instance_space = InstanceSpace(m=20)
-    # run_hard_coded_experiments()
+    # Amount of times to simulate
+    ITERATIONS = 100_000
 
-    run_rand_experiments(instance_space, 100_000)
-    # adversary = instance_space.gen_adversary()
-    # run_experiment(adversary, verbose=True)
-    # print(instance_space.c_upper_bound)
-    # run_runtime_experiments(instance_space, 3, 365, step=1)
+    # Run experiments on files
+    run_hard_coded_experiments()
+
+    # Define default instance space and run experiments
+    original_instance_space = InstanceSpace()
+    run_rand_experiments(original_instance_space, ITERATIONS)
+
+    # Define altered instance space and run experiments
+    instance_space_altered = InstanceSpace(p_min=50, p_max=150, h_min=1, h_max=49)
+    run_rand_experiments(instance_space_altered, ITERATIONS)
